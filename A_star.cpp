@@ -68,13 +68,13 @@ bool AStar::A_Star::isGoal(Vec2i source_, Vec2i goal_)
 
 double AStar::A_Star::HScore_manhattan(Vec2i source_, Vec2i goal_)
 {
-	double Hcost = sqrt(pow(source_.x - goal_.x, 2) + pow(source_.y - goal_.y, 2));
+	double Hcost = abs(source_.x - goal_.x) + abs(source_.y - goal_.y);
 	return Hcost;
 }
 
 double AStar::A_Star::HScore_euclidean(Vec2i source_, Vec2i goal_)
 {
-	double Hcost = abs(source_.x - goal_.x) + abs(source_.y - goal_.y);
+	double Hcost = sqrt(pow(source_.x - goal_.x, 2) + pow(source_.y - goal_.y, 2));
 	return Hcost; 
 }
 
