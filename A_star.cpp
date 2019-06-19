@@ -18,14 +18,19 @@ AStar::Node::Node(Vec2i coordinates_, Node *parent_)
 	Cost_F = 0;
 }
 
-void AStar::A_Star::set_conflag(int connected_flag_)
+void AStar::A_Star::set_conflag(bool connected_flag_)
 {
 	connected_flag = connected_flag_;
 }
 
+void AStar::A_Star::set_disflag(bool distance_flag_)
+{
+	distance_flag = distance_flag_;
+}
+
 void AStar::A_Star::set_x_connected()
 {
-	if (connected_flag == 1) 
+	if (connected_flag == true) 
 	{ 
 		// 8-connected vector      		
         x_connected = { { 0, 1 }, { 1, 0 }, 
@@ -149,7 +154,14 @@ void AStar::A_Star::findPath(Vec2i source_, Vec2i goal_)
 			if (successor == NULL) {
 				successor = new Node(newCoordinates, current);
 				successor->Cost_G = newGcost;
-				successor->Cost_H = HScore_manhattan(successor->coordinates, goal_);
+				if (distance_flag == true)
+				{
+					successor->Cost_H = HScore_manhattan(successor->coordinates, goal_);
+				}
+				else 
+				{
+					successor->Cost_H = HScore_euclidean(successor->coordinates, goal_);
+				}
 				successor->Cost_F = successor->Cost_G + successor->Cost_H;
 				PathSet.insert(successor);
 			}
@@ -207,13 +219,13 @@ int main()
 {
 	AStar::A_Star temp;
 	temp.Generate_map("easy.txt");
-	std::cout << temp.map[4][0] << temp.map[4][1] << temp.map[4][2] << temp.map[4][3] << temp.map[4][4] << std::endl;
+	// std::cout << temp.map[4][0] << temp.map[4][1] << temp.map[4][2] << temp.map[4][3] << temp.map[4][4] << std::endl;
 	AStar::Vec2i start, goal;
 	start.x = 3;
 	start.y = 2;
 	goal.x = 3;
 	goal.y = 9;
-	temp.set_conflag(1);
+	temp.set_conflag(0);
 	temp.set_x_connected();
 	temp.findPath(start, goal);
 }

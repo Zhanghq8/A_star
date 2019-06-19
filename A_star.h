@@ -29,9 +29,11 @@ namespace AStar
             // A_star();
             std::vector<Vec2i> path;
             std::vector<std::vector<int> > map; 
-            int connected_flag;
+            bool connected_flag;
+            bool distance_flag;
             std::vector<std::vector<int> > x_connected;
-            void set_conflag(int connected_flag_ = 1); // 1 for 8-connected, 0 for 4-connected
+            void set_conflag(bool connected_flag_ = false); // 0 for 8-connected, 1 for 4-connected
+            void set_disflag(bool distance_flag_ = true); // 0 for manhattan, 1 for eucilidean
             void set_x_connected();
             bool isValid(Vec2i coordinates_); // check if the coordinate is valid
             bool isGoal(Vec2i source_, Vec2i goal_); // check if the coordinate is at goal pos
