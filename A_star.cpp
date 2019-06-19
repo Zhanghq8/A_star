@@ -11,11 +11,11 @@
 
 AStar::Node::Node(Vec2i coordinates_, Node *parent_)
 {
-    parent = parent_;
-    coordinates = coordinates_;
-    Cost_G = 0;
-    Cost_H = 0;
-    Cost_F = 0;
+	parent = parent_;
+	coordinates = coordinates_;
+	Cost_G = 0;
+	Cost_H = 0;
+	Cost_F = 0;
 }
 
 void AStar::A_Star::set_conflag(int connected_flag_)
@@ -44,8 +44,8 @@ void AStar::A_Star::set_x_connected()
 bool AStar::A_Star::isValid(Vec2i coordinates_)
 {
 	if (coordinates_.x-1 < 0 || coordinates_.x-1 >= map[0].size() ||
-        coordinates_.y-1 < 0 || coordinates_.y-1 >= map.size() || 
-        map[coordinates_.x-1][coordinates_.y-1] == 1) 
+		coordinates_.y-1 < 0 || coordinates_.y-1 >= map.size() || 
+		map[coordinates_.x-1][coordinates_.y-1] == 1) 
 	{
 		return false;
 	}
@@ -54,17 +54,17 @@ bool AStar::A_Star::isValid(Vec2i coordinates_)
 
 bool AStar::A_Star::isGoal(Vec2i source_, Vec2i goal_)
 {
-    if (source_.x == goal_.x && source_.y == goal_.y) 
-    {
-        return true;
-    }
-    return false;
+	if (source_.x == goal_.x && source_.y == goal_.y) 
+	{
+		return true;
+	}
+	return false;
 }
 
 double AStar::A_Star::HScore_manhattan(Vec2i source_, Vec2i goal_)
 {
-    double Hcost = sqrt(pow(source_.x - goal_.x, 2) + pow(source_.y - goal_.y, 2));
-    return Hcost;
+	double Hcost = sqrt(pow(source_.x - goal_.x, 2) + pow(source_.y - goal_.y, 2));
+	return Hcost;
 }
 
 double AStar::A_Star::HScore_euclidean(Vec2i source_, Vec2i goal_)
@@ -78,17 +78,17 @@ void AStar::A_Star::Generate_map(std::string path_)
 	std::ifstream file(path_.c_str());
 	if (file)
 	{
-	    std::string line;
-	    while (std::getline(file, line))
+		std::string line;
+		while (std::getline(file, line))
 		{
-	     	std::vector<int> row;
-	        char element;
-	        std::istringstream ss(line);
-	        while ( ss >> element )
-	        {
-	        	row.push_back(element - '0');
-	        }
-	        map.push_back(row);
+			std::vector<int> row;
+			char element;
+			std::istringstream ss(line);
+			while ( ss >> element )
+			{
+				row.push_back(element - '0');
+			}
+			map.push_back(row);
 		}		
 	}
 	file.close();
@@ -146,59 +146,59 @@ void AStar::A_Star::findPath(Vec2i source_, Vec2i goal_)
 				newGcost = current->Cost_G + 1;
 			}
 			Node *successor = findNode(PathSet, newCoordinates);
-            if (successor == NULL) {
-                successor = new Node(newCoordinates, current);
-                successor->Cost_G = newGcost;
-                successor->Cost_H = HScore_manhattan(successor->coordinates, goal_);
-                successor->Cost_F = successor->Cost_G + successor->Cost_H;
-                PathSet.insert(successor);
-            }
-            else if (newGcost < successor->Cost_G) {
-                successor->parent = current;
-                successor->Cost_G = newGcost;
-                successor->Cost_F = successor->Cost_G + successor->Cost_H;
-            }
+			if (successor == NULL) {
+				successor = new Node(newCoordinates, current);
+				successor->Cost_G = newGcost;
+				successor->Cost_H = HScore_manhattan(successor->coordinates, goal_);
+				successor->Cost_F = successor->Cost_G + successor->Cost_H;
+				PathSet.insert(successor);
+			}
+			else if (newGcost < successor->Cost_G) {
+				successor->parent = current;
+				successor->Cost_G = newGcost;
+				successor->Cost_F = successor->Cost_G + successor->Cost_H;
+			}
 		}
 	}
-    while (current != NULL) 
-    {
-        path.push_back(current->coordinates);
-        current = current->parent;
-    }
-    reverse(path.begin(), path.end());
-    if (!path.empty()) 
-    {
-    	std::cout << "The valid path: ";
-    	for (auto ele:path)
-    	{
-    		std::cout << "[" << ele.x << "," << ele.y << "] "; 
-    	}
-    	std::cout << "\n";
-    }
-    else
-    {
-    	std::cout << "No valid path." << std::endl;
-    }
-    releaseNodes(PathSet);
-    releaseNodes(VisitedSet);
+	while (current != NULL) 
+	{
+		path.push_back(current->coordinates);
+		current = current->parent;
+	}
+	reverse(path.begin(), path.end());
+	if (!path.empty()) 
+	{
+		std::cout << "The valid path: ";
+		for (auto ele:path)
+		{
+			std::cout << "[" << ele.x << "," << ele.y << "] "; 
+		}
+		std::cout << "\n";
+	}
+	else
+	{
+		std::cout << "No valid path." << std::endl;
+	}
+	releaseNodes(PathSet);
+	releaseNodes(VisitedSet);
 }
 
 AStar::Node* AStar::A_Star::findNode(std::set<Node*>& nodes_, Vec2i coordinates_)
 {
-    for (auto node:nodes_) {
-        if (node->coordinates.x == coordinates_.x && node->coordinates.y == coordinates_.y) {
-            return node;
-        }
-    }
-    return NULL;
+	for (auto node:nodes_) {
+		if (node->coordinates.x == coordinates_.x && node->coordinates.y == coordinates_.y) {
+			return node;
+		}
+	}
+	return NULL;
 }
 
 void AStar::A_Star::releaseNodes(std::set<Node*>& nodes_)
 {
-    for (auto it = nodes_.begin(); it != nodes_.end();) {
-        delete *it;
-        it = nodes_.erase(it);
-    }
+	for (auto it = nodes_.begin(); it != nodes_.end();) {
+		delete *it;
+		it = nodes_.erase(it);
+	}
 }
 
 
